@@ -9,10 +9,10 @@ def fibo(n: int) -> int:
     return b
 
 def fibo_recursive(n: int) -> int:
+    if n < 0:
+        raise ValueError("n must be non-negative")
     if n == 0:
         return 0
     elif n == 1:
         return 1
-    elif n > 1:
-        return fibo_recursive(n - 1) + fibo_recursive(n - 2)
-print(fibo(10), fibo_recursive(10))
+    return fibo_recursive(n - 1) + fibo_recursive(n - 2)

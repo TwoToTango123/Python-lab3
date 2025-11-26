@@ -10,11 +10,11 @@ def quick_sort(a: list[int]) -> list[int]:
         return a
     else:
         pivot = a[-1]
-        left = [x for x in a[:-1] if x < pivot]  
-        right = [x for x in a[:-1] if x >= pivot]  
-        return quick_sort(left) + [pivot] + quick_sort(right)  
+        left = [x for x in a[:-1] if x < pivot]
+        right = [x for x in a[:-1] if x >= pivot]
+        return quick_sort(left) + [pivot] + quick_sort(right)
 
-def counting_sort(a: list[int]) -> list[int] :
+def counting_sort(a: list[int]) -> list[int]:
     if not a:
         return a
 
@@ -34,26 +34,27 @@ def counting_sort(a: list[int]) -> list[int] :
 def radix_sort(a: list[int], base: int = 10) -> list[int]:
     if not a:
         return a
-    max_num = max (a)
+    max_num = max(a)
     exp = 1
     while max_num // exp > 0:
-        buckets = [[] for _ in range(10)]
+        buckets: list[list[int]] = [[] for i in range(base)]
         for num in a:
-            digit = (num // exp) % 10
+            digit = (num // exp) % base
             buckets[digit].append(num)
         a = [num for bucket in buckets for num in bucket]
         exp *= base
     return a
 
-def bucket_sort(a: list[float], buckets: int | None = None) -> list[float]:
+def bucket_sort(a: list[float], buckets_count: int | None = None) -> list[float]:
     if not a:
         return a
 
-    n = len(a)
-    buckets = [[] for _ in range(n)]
+    n: int = buckets_count if buckets_count is not None else len(a)
+    buckets: list[list[float]] = [[] for i in range(n)]
 
     for x in a:
-        buckets[int(x * n)].append(x)
+        idx = min(int(x * n), n - 1)
+        buckets[idx].append(x)
 
     for bucket in buckets:
         for i in range(1, len(bucket)):
@@ -71,7 +72,8 @@ def bucket_sort(a: list[float], buckets: int | None = None) -> list[float]:
     return result
 
 def heap_sort(a: list[int]) -> list[int]:
-    n = len(a)
+    arr = a[:]
+    n = len(arr)
 
     for start in range(n // 2 - 1, -1, -1):
         parent = start
@@ -80,34 +82,34 @@ def heap_sort(a: list[int]) -> list[int]:
             right = 2 * parent + 2
             largest = parent
 
-            if left < n and a[left] > a[largest]:
+            if left < n and arr[left] > arr[largest]:
                 largest = left
-            if right < n and a[right] > a[largest]:
+            if right < n and arr[right] > arr[largest]:
                 largest = right
 
             if largest == parent:
                 break
 
-            a[parent], a[largest] = a[largest], a[parent]
+            arr[parent], arr[largest] = arr[largest], arr[parent]
             parent = largest
 
     for end in range(n - 1, 0, -1):
-        a[0], a[end] = a[end], a[0]
+        arr[0], arr[end] = arr[end], arr[0]
         parent = 0
         while True:
             left = 2 * parent + 1
             right = 2 * parent + 2
             largest = parent
 
-            if left < end and a[left] > a[largest]:
+            if left < end and arr[left] > arr[largest]:
                 largest = left
-            if right < end and a[right] > a[largest]:
+            if right < end and arr[right] > arr[largest]:
                 largest = right
 
             if largest == parent:
                 break
 
-            a[parent], a[largest] = a[largest], a[parent]
+            arr[parent], arr[largest] = arr[largest], arr[parent]
             parent = largest
 
-    return a
+    return arr

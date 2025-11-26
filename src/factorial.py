@@ -5,7 +5,8 @@ def factorial(n: int) -> int:
     return result
 
 def factorial_recursive(n: int) -> int:
-    if n == 1:
+    if n < 0:
+        raise ValueError("n must be non-negative")
+    if n == 1 or n == 0:
         return 1
-    if n > 1:
-        return factorial_recursive(n - 1) * n
+    return factorial_recursive(n - 1) * n
